@@ -18,3 +18,4 @@ val GrayButton = Color(0xFFB0B0B0)
 val GreenAccent = Color(0xFF4CAF50)
 val RedAccent = Color(0xFFF44336)
 val BlueAccent = Color(0xFF2196F3)
+

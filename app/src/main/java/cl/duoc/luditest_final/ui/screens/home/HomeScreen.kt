@@ -3,6 +3,7 @@ package cl.duoc.luditest_final.ui.screens.home
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -18,24 +19,35 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cl.duoc.luditest_final.ui.theme.TertiaryContainerLight
-import cl.duoc.luditest_final.ui.theme.OnSurfaceLight
-import cl.duoc.luditest_final.ui.theme.YellowAccent
-import cl.duoc.luditest_final.ui.theme.PurpleAccent
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.clickable
+import androidx.compose.runtime.LaunchedEffect
+import cl.duoc.luditest_final.ui.theme.GrayButton
+import cl.duoc.luditest_final.ui.theme.GreenAccent
+import cl.duoc.luditest_final.ui.theme.OnSurfaceLight
+import cl.duoc.luditest_final.ui.theme.PurpleAccent
+import cl.duoc.luditest_final.ui.theme.TertiaryContainerLight
+import cl.duoc.luditest_final.ui.theme.YellowAccent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    viewModel: HomeViewModel,
     onNavigateToDisclaimer: () -> Unit,
     onNavigateToProfile: () -> Unit,
     onNavigateToWishlist: () -> Unit,
-    onNavigateToRecommended: () -> Unit
+    onNavigateToRecommended: () -> Unit,
+    onNavigateToLogin: () -> Unit
 ) {
+    val userState by viewModel.userState.collectAsState()
+
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+    // Cargar estado del usuario al iniciar
+    LaunchedEffect(Unit) {
+        viewModel.loadUserState()
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -57,9 +69,31 @@ fun HomeScreen(
                     modifier = Modifier.padding(bottom = 20.dp)
                 )
 
-                DrawerButton("Perfil de Usuario", onClick = onNavigateToProfile)
-                DrawerButton("Wishlist", onClick = onNavigateToWishlist)
-                DrawerButton("Juegos Recomendados", onClick = onNavigateToRecommended)
+                if (userState.isLoggedIn) {
+                    // Usuario logueado
+                    Text(
+                        "Hola, ${userState.user?.name ?: "Usuario"}",
+                        fontSize = 18.sp,
+                        color = Color.Black,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                    DrawerButton("Perfil de Usuario", onClick = onNavigateToProfile)
+                    DrawerButton("Wishlist", onClick = onNavigateToWishlist)
+                    DrawerButton("Juegos Recomendados", onClick = onNavigateToRecommended)
+                    DrawerButton("Cerrar Sesión", onClick = {
+                        viewModel.logout()
+                        scope.launch { drawerState.close() }
+                    })
+                } else {
+                    // Usuario no logueado
+                    DrawerButton("Iniciar Sesión", onClick = {
+                        onNavigateToLogin()
+                        scope.launch { drawerState.close() }
+                    })
+                    DrawerButton("Perfil de Usuario", onClick = onNavigateToProfile)
+                    DrawerButton("Wishlist", onClick = onNavigateToWishlist)
+                    DrawerButton("Juegos Recomendados", onClick = onNavigateToRecommended)
+                }
             }
         }
     ) {
@@ -171,6 +205,70 @@ fun HomeScreen(
                 contentPadding = PaddingValues(horizontal = 60.dp, vertical = 10.dp)
             ) {
                 Text("¡Realiza el LudiTest!", color = Color.White, fontSize = 26.sp)
+            }
+
+            // Mostrar mensaje si no está logueado
+            if (!userState.isLoggedIn) {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 30.dp, vertical = 10.dp)
+                        .graphicsLayer { rotationZ = 1f }
+                        .drawBehind {
+                            val offset = 3.dp.toPx()
+                            drawRoundRect(
+                                color = Color.Black,
+                                topLeft = Offset(offset, offset),
+                                size = size,
+                                cornerRadius = CornerRadius(8.dp.toPx())
+                            )
+                        }
+                        .background(
+                            color = GrayButton,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
+                        .padding(12.dp)
+                ) {
+                    Text(
+                        text = "💡 Inicia sesión para guardar tu progreso",
+                        fontSize = 14.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+
+            // Mostrar información del test completado si está logueado y tiene resultados
+            if (userState.isLoggedIn && userState.user?.hasCompletedTest == true) {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 30.dp, vertical = 10.dp)
+                        .graphicsLayer { rotationZ = -1f }
+                        .drawBehind {
+                            val offset = 3.dp.toPx()
+                            drawRoundRect(
+                                color = Color.Black,
+                                topLeft = Offset(offset, offset),
+                                size = size,
+                                cornerRadius = CornerRadius(8.dp.toPx())
+                            )
+                        }
+                        .background(
+                            color = GreenAccent,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
+                        .padding(12.dp)
+                ) {
+                    Text(
+                        text = "✅ Ya completaste el test. Ve a 'Juegos Recomendados' para ver tus resultados.",
+                        fontSize = 14.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
     }
