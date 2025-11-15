@@ -25,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import cl.duoc.luditest_final.ui.theme.*
 import kotlinx.coroutines.launch
 import cl.duoc.luditest_final.R
@@ -47,6 +48,9 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         viewModel.loadUserState()
     }
+
+    // ✅ NUEVO: Determinar si es invitado
+    val isGuest = userState.user?.hasPassword != true
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -78,7 +82,7 @@ fun HomeScreen(
                 )
 
                 Text(
-                    text = if (userState.user?.hasPassword == true) "Cuenta registrada" else "Modo invitado",
+                    text = if (isGuest) "Modo invitado" else "Cuenta registrada", // ✅ MEJORADO
                     fontSize = 12.sp,
                     color = DcGray,
                     fontWeight = FontWeight.Medium,
@@ -89,14 +93,26 @@ fun HomeScreen(
                 DrawerButton("Wishlist", onClick = onNavigateToWishlist)
                 DrawerButton("Juegos Recomendados", onClick = onNavigateToRecommended)
 
-                DrawerButton("Cerrar Sesion", onClick = {
-                    viewModel.logout()
-                    scope.launch { drawerState.close() }
-                    onNavigateToLogin()
-                })
+                // ✅ NUEVO: Botón dinámico según tipo de usuario
+                DrawerButton(
+                    text = if (isGuest) "Volver a Login" else "Cerrar Sesión", // ✅ TEXTO DINÁMICO
+                    onClick = {
+                        if (isGuest) {
+                            // ✅ MODO INVITADO: Solo navega al login
+                            scope.launch { drawerState.close() }
+                            onNavigateToLogin()
+                        } else {
+                            // ✅ USUARIO REGISTRADO: Hace logout y navega
+                            viewModel.logout()
+                            scope.launch { drawerState.close() }
+                            onNavigateToLogin()
+                        }
+                    }
+                )
             }
         }
     ) {
+        // ... el resto de tu código SE MANTIENE IGUAL
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -160,7 +176,7 @@ fun HomeScreen(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    text = "Tu proximo juego favorito podria ser un lanzamiento de este ano. Te atreves a descubrirlo?",
+                    text = "Tu próximo juego favorito podría ser un lanzamiento de este año. ¿Te atreves a descubrirlo?",
                     fontSize = 22.sp,
                     color = DcBlack,
                     fontFamily = FontFamily.SansSerif,
@@ -242,7 +258,7 @@ fun HomeScreen(
                 }
             }
 
-            if (userState.user?.hasPassword != true) {
+            if (isGuest) { // ✅ USAMOS LA MISMA VARIABLE
                 Spacer(Modifier.height(16.dp))
                 Box(
                     modifier = Modifier
@@ -252,7 +268,7 @@ fun HomeScreen(
                         .padding(12.dp)
                 ) {
                     Text(
-                        text = "MODO INVITADO - Tus datos se guardaran localmente",
+                        text = "MODO INVITADO - Tus datos se guardarán localmente",
                         fontSize = 12.sp,
                         color = DcWhite,
                         fontWeight = FontWeight.Medium,

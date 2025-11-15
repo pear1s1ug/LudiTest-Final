@@ -2,7 +2,7 @@ package cl.duoc.luditest_final.data.local
 
 import cl.duoc.luditest_final.data.model.PersonalityInfo
 import cl.duoc.luditest_final.data.model.PersonalityType
-
+import cl.duoc.luditest_final.data.model.GameGenre // ✅ Nuevo import
 
 object PersonalityData {
     val personalities = listOf(
@@ -17,18 +17,19 @@ object PersonalityData {
                 "Competitividad saludable"
             ),
             recommendedGenres = listOf(
-                "Shooter FPS / TPS",
-                "Battle Royale",
-                "Juegos de lucha",
-                "Racing competitivo",
-                "Deportes tradicionales y extremos",
-                "Hack and slash",
-                "Beat 'em up",
-                "Run and gun",
-                "Survival action",
-                "MOBA",
-                "Action RPG",
-                "Tactical RPG competitivo"
+                GameGenre.FPS,           // ✅ Enums en lugar de strings
+                GameGenre.TPS,
+                GameGenre.BATTLE_ROYALE,
+                GameGenre.FIGHTING,
+                GameGenre.RACING,
+                GameGenre.SPORTS,
+                GameGenre.HACK_AND_SLASH,
+                GameGenre.BEAT_EM_UP,
+                GameGenre.RUN_AND_GUN,
+                GameGenre.SURVIVAL_ACTION,
+                GameGenre.MOBA,
+                GameGenre.ACTION_RPG,
+                GameGenre.TACTICAL_RPG
             )
         ),
         PersonalityInfo(
@@ -42,18 +43,18 @@ object PersonalityData {
                 "Adaptabilidad social"
             ),
             recommendedGenres = listOf(
-                "Party",
-                "Juegos casuales",
-                "Co-op",
-                "Karaoke / Canto",
-                "Juegos de ritmo / Música",
-                "Sandbox creativo social",
-                "MMORPG",
-                "Minijuegos",
-                "Trivia / Quiz",
-                "Juegos Narrativos",
-                "Simuladores Sociales",
-                "Simulaciones de vida"
+                GameGenre.PARTY,
+                GameGenre.CASUAL,
+                GameGenre.CO_OP,
+                GameGenre.KARAOKE,
+                GameGenre.RHYTHM,
+                GameGenre.MUSIC,
+                GameGenre.CREATIVE_SANDBOX,
+                GameGenre.MMORPG,
+                GameGenre.SOCIAL_SIM,
+                GameGenre.NARRATIVE_ADVENTURE,
+                GameGenre.LIFE_SIM,
+                GameGenre.VISUAL_NOVEL
             )
         ),
         PersonalityInfo(
@@ -67,15 +68,15 @@ object PersonalityData {
                 "Trabajo metódico"
             ),
             recommendedGenres = listOf(
-                "Juegos cooperativos no competitivos",
-                "Simuladores de vida",
-                "Simuladores de gestión chill",
-                "Adventure",
-                "Walking simulator",
-                "Puzzle",
-                "Visual novel",
-                "Idle",
-                "Point & Click"
+                GameGenre.CO_OP,
+                GameGenre.LIFE_SIM,
+                GameGenre.MANAGEMENT_SIM,
+                GameGenre.ADVENTURE,
+                GameGenre.WALKING_SIMULATOR,
+                GameGenre.PUZZLE,
+                GameGenre.VISUAL_NOVEL,
+                GameGenre.IDLE_GAME,
+                GameGenre.POINT_AND_CLICK
             )
         ),
         PersonalityInfo(
@@ -89,15 +90,18 @@ object PersonalityData {
                 "Análisis de datos"
             ),
             recommendedGenres = listOf(
-                "Estrategia por turnos",
-                "Puzzles complejos / brain teasers",
-                "Juegos de lógica y acertijos",
-                "Simuladores complejos",
-                "4X / Grand strategy",
-                "Tactical RPG",
-                "Estrategia en tiempo real",
-                "Roguelike / Roguelite",
-                "Bullet Hell / juegos de precisión"
+                GameGenre.TURN_BASED_STRATEGY,
+                GameGenre.PUZZLE,
+                GameGenre.LOGIC_PUZZLE,
+                GameGenre.BRAIN_TEASER,
+                GameGenre.SIMULATION,
+                GameGenre.FOUR_X,
+                GameGenre.GRAND_STRATEGY,
+                GameGenre.TACTICAL_RPG,
+                GameGenre.REAL_TIME_STRATEGY,
+                GameGenre.ROGUELIKE,
+                GameGenre.ROGUELITE,
+                GameGenre.BULLET_HELL
             )
         )
     )

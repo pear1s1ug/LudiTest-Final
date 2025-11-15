@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-kapt")
 }
 
 android {
@@ -72,8 +73,15 @@ dependencies {
 
     // Para encriptación
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
-    // Para hashing más seguro (opcional)
-    implementation("at.favre.lib:bcrypt:0.9.0")
+    // Para hashing más seguro
+    implementation("at.favre.lib:bcrypt:0.10.2")
+
+    // ROOM
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
