@@ -2,7 +2,7 @@ package cl.duoc.luditest_final.data.local
 
 import cl.duoc.luditest_final.data.model.PersonalityInfo
 import cl.duoc.luditest_final.data.model.PersonalityType
-import cl.duoc.luditest_final.data.model.GameGenre // ✅ Nuevo import
+import cl.duoc.luditest_final.data.model.GameGenre
 
 object PersonalityData {
     val personalities = listOf(
@@ -17,7 +17,7 @@ object PersonalityData {
                 "Competitividad saludable"
             ),
             recommendedGenres = listOf(
-                GameGenre.FPS,           // ✅ Enums en lugar de strings
+                GameGenre.FPS,
                 GameGenre.TPS,
                 GameGenre.BATTLE_ROYALE,
                 GameGenre.FIGHTING,
@@ -30,7 +30,8 @@ object PersonalityData {
                 GameGenre.MOBA,
                 GameGenre.ACTION_RPG,
                 GameGenre.TACTICAL_RPG
-            )
+            ),
+            primaryGenre = GameGenre.BATTLE_ROYALE // Género principal para D
         ),
         PersonalityInfo(
             type = PersonalityType.INFLUENTIAL,
@@ -55,7 +56,8 @@ object PersonalityData {
                 GameGenre.NARRATIVE_ADVENTURE,
                 GameGenre.LIFE_SIM,
                 GameGenre.VISUAL_NOVEL
-            )
+            ),
+            primaryGenre = GameGenre.PARTY // Género principal para I
         ),
         PersonalityInfo(
             type = PersonalityType.STEADY,
@@ -77,7 +79,8 @@ object PersonalityData {
                 GameGenre.VISUAL_NOVEL,
                 GameGenre.IDLE_GAME,
                 GameGenre.POINT_AND_CLICK
-            )
+            ),
+            primaryGenre = GameGenre.LIFE_SIM // Género principal para S
         ),
         PersonalityInfo(
             type = PersonalityType.CONSCIENTIOUS,
@@ -102,7 +105,8 @@ object PersonalityData {
                 GameGenre.ROGUELIKE,
                 GameGenre.ROGUELITE,
                 GameGenre.BULLET_HELL
-            )
+            ),
+            primaryGenre = GameGenre.TURN_BASED_STRATEGY // Género principal para C
         )
     )
 }

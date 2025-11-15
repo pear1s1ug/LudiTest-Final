@@ -216,7 +216,9 @@ fun QuizScreen(
                     shape = RoundedCornerShape(5.dp),
                     border = BorderStroke(2.dp, Color.Black),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (viewModel.hasAnswerSelected()) PurpleAccent else PurpleAccent.copy(alpha = 0.5f)
+                        containerColor = if (viewModel.hasAnswerSelected()) PurpleAccent else PurpleAccent.copy(
+                            alpha = 0.5f
+                        )
                     ),
                     contentPadding = PaddingValues(vertical = 12.dp)
                 ) {

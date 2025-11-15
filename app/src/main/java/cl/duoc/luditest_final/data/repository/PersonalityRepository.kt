@@ -5,6 +5,7 @@ import cl.duoc.luditest_final.data.model.PersonalityInfo
 import cl.duoc.luditest_final.data.model.PersonalityType
 import cl.duoc.luditest_final.data.model.UserScore
 import cl.duoc.luditest_final.data.local.TiebreakerQuestions
+import cl.duoc.luditest_final.data.model.GameGenre
 import cl.duoc.luditest_final.data.model.Question
 
 class PersonalityRepository {
@@ -60,13 +61,25 @@ class PersonalityRepository {
         return newScores.maxByOrNull { it.value }?.key ?: PersonalityType.STEADY
     }
 
-    // Obtiene los géneros recomendados para un tipo de personalidad
-    fun getRecommendedGenres(personalityType: PersonalityType): List<String> {
-        return getPersonalityByType(personalityType)?.recommendedGenres ?: emptyList()
-    }
 
     // Obtiene las fortalezas de un tipo de personalidad
     fun getStrengths(personalityType: PersonalityType): List<String> {
         return getPersonalityByType(personalityType)?.strengths ?: emptyList()
+    }
+
+    // Obtiene el género principal asociado a un tipo de personalidad
+    fun getPrimaryGenre(personalityType: PersonalityType): GameGenre {
+        return PersonalityMapper.getPrimaryGenre(personalityType)
+    }
+}
+
+object PersonalityMapper {
+    fun getPrimaryGenre(personalityType: PersonalityType): GameGenre {
+        return when (personalityType) {
+            PersonalityType.DOMINANT -> GameGenre.BATTLE_ROYALE
+            PersonalityType.INFLUENTIAL -> GameGenre.PARTY
+            PersonalityType.STEADY -> GameGenre.LIFE_SIM
+            PersonalityType.CONSCIENTIOUS -> GameGenre.TURN_BASED_STRATEGY
+        }
     }
 }

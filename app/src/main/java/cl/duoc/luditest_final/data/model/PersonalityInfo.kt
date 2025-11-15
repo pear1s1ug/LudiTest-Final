@@ -5,5 +5,6 @@ data class PersonalityInfo(
     val title: String,
     val description: String,
     val strengths: List<String>,
-    val recommendedGenres: List<GameGenre>
+    val recommendedGenres: List<GameGenre>,
+    val primaryGenre: GameGenre
 )

@@ -9,8 +9,10 @@ import cl.duoc.luditest_final.data.model.GamePlatform
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
 class VideogameRepository {
+
+    // ... todas tus funciones existentes se mantienen igual ...
+
     fun getAllVideogames(): List<Videogame> {
         return VideogameData.videogames
     }
@@ -110,5 +112,51 @@ class VideogameRepository {
         } else {
             VideogameData.videogames.sortedByDescending { it.releaseDate }
         }
+    }
+
+    // === IMPLEMENTACIÓN OPCIÓN 2 ===
+
+    // Mapper para géneros principales (puede ir dentro del repositorio o como object separado)
+    private fun getPrimaryGenre(personalityType: PersonalityType): GameGenre {
+        return when (personalityType) {
+            PersonalityType.DOMINANT -> GameGenre.BATTLE_ROYALE
+            PersonalityType.INFLUENTIAL -> GameGenre.PARTY
+            PersonalityType.STEADY -> GameGenre.LIFE_SIM
+            PersonalityType.CONSCIENTIOUS -> GameGenre.TURN_BASED_STRATEGY
+        }
+    }
+
+    // ✅ NUEVO: Obtener juegos destacados por personalidad (top 3 por rating)
+    fun getFeaturedGamesByPersonality(personalityType: PersonalityType): List<Videogame> {
+        val primaryGenre = getPrimaryGenre(personalityType)
+        return VideogameData.videogames
+            .filter { it.genres.contains(primaryGenre) }
+            .sortedByDescending { it.rating }
+            .take(3) // Top 3 por rating
+    }
+
+    // ✅ NUEVO: Obtener el juego principal destacado para una personalidad
+    fun getMainFeaturedGame(personalityType: PersonalityType): Videogame? {
+        val primaryGenre = getPrimaryGenre(personalityType)
+        return VideogameData.videogames
+            .filter { it.genres.contains(primaryGenre) }
+            .maxByOrNull { it.rating }
+    }
+
+    // ✅ NUEVO: Obtener todos los juegos del género principal de una personalidad
+    fun getGamesByPrimaryGenre(personalityType: PersonalityType): List<Videogame> {
+        val primaryGenre = getPrimaryGenre(personalityType)
+        return VideogameData.videogames
+            .filter { it.genres.contains(primaryGenre) }
+            .sortedByDescending { it.rating }
+    }
+
+    // ✅ NUEVO: Versión con límite personalizable
+    fun getFeaturedGamesByPersonality(personalityType: PersonalityType, limit: Int = 3): List<Videogame> {
+        val primaryGenre = getPrimaryGenre(personalityType)
+        return VideogameData.videogames
+            .filter { it.genres.contains(primaryGenre) }
+            .sortedByDescending { it.rating }
+            .take(limit)
     }
 }

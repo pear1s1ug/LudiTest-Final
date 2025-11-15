@@ -143,7 +143,7 @@ fun HomeScreen(
             Spacer(Modifier.height(60.dp))
 
             Text(
-                text = "BIENVENIDO DE VUELTA, ${userState.user?.name?.uppercase() ?: "AVENTURERO"}!",
+                text = "BIENVENID@ DE VUELTA, ${userState.user?.name?.uppercase() ?: "AVENTURERO"}!",
                 fontSize = 26.sp,
                 color = DcYellow,
                 fontWeight = FontWeight.Bold,
