@@ -14,6 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import cl.duoc.luditest_final.ui.screens.login.LoginScreen
 import cl.duoc.luditest_final.ui.screens.quiz.QuizScreen
+import cl.duoc.luditest_final.ui.screens.register.RegisterScreen
+import cl.duoc.luditest_final.ui.screens.profile.ProfileScreen // ✅ AGREGAR IMPORT
+import cl.duoc.luditest_final.ui.screens.profile.ProfileViewModel
 
 @Composable
 fun AppNavigation(
@@ -23,8 +26,50 @@ fun AppNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = Routes.Home.route
+        startDestination = Routes.Login.route
     ) {
+        composable(Routes.Login.route) {
+            val loginViewModel: cl.duoc.luditest_final.ui.screens.login.LoginViewModel =
+                viewModel(factory = viewModelFactory)
+
+            LoginScreen(
+                viewModel = loginViewModel,
+                onLoginSuccess = {
+                    navController.navigate(Routes.Home.route) {
+                        popUpTo(Routes.Login.route) { inclusive = true }
+                    }
+                },
+                onNavigateToRegister = {
+                    navController.navigate(Routes.Register.route)
+                },
+                onNavigateBack = {
+                    // No hay pantalla anterior
+                }
+            )
+        }
+
+        composable(Routes.Register.route) {
+            val registerViewModel: cl.duoc.luditest_final.ui.screens.register.RegisterViewModel =
+                viewModel(factory = viewModelFactory)
+
+            RegisterScreen(
+                viewModel = registerViewModel,
+                onRegisterSuccess = {
+                    navController.navigate(Routes.Home.route) {
+                        popUpTo(Routes.Register.route) { inclusive = true }
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.navigate(Routes.Login.route) {
+                        popUpTo(Routes.Register.route) { inclusive = true }
+                    }
+                },
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
         composable(Routes.Home.route) {
             val homeViewModel: cl.duoc.luditest_final.ui.screens.home.HomeViewModel =
                 viewModel(factory = viewModelFactory)
@@ -35,7 +80,7 @@ fun AppNavigation(
                     navController.navigate(Routes.Disclaimer.route)
                 },
                 onNavigateToProfile = {
-                    navController.navigate(Routes.UserProfile.route)
+                    navController.navigate(Routes.UserProfile.route) // ✅ ESTA ES LA QUE SE ACTIVA
                 },
                 onNavigateToWishlist = {
                     navController.navigate(Routes.Wishlist.route)
@@ -44,7 +89,9 @@ fun AppNavigation(
                     navController.navigate(Routes.Recommended.route)
                 },
                 onNavigateToLogin = {
-                    navController.navigate(Routes.Login.route)
+                    navController.navigate(Routes.Login.route) {
+                        popUpTo(Routes.Home.route) { inclusive = true }
+                    }
                 }
             )
         }
@@ -74,24 +121,6 @@ fun AppNavigation(
             )
         }
 
-        composable(Routes.Login.route) {
-            val loginViewModel: cl.duoc.luditest_final.ui.screens.login.LoginViewModel =
-                viewModel(factory = viewModelFactory)
-
-            LoginScreen(
-                viewModel = loginViewModel,
-                onLoginSuccess = {
-                    navController.popBackStack(Routes.Home.route, inclusive = false)
-                },
-                onNavigateToRegister = {
-                    navController.navigate(Routes.Login.route)
-                },
-                onNavigateBack = {
-                    navController.popBackStack()
-                }
-            )
-        }
-
         composable(Routes.Result.route) {
             Text(
                 "Resultados - Por implementar",
@@ -114,9 +143,13 @@ fun AppNavigation(
         }
 
         composable(Routes.UserProfile.route) {
-            Text(
-                "Perfil de Usuario - Por implementar",
-                modifier = Modifier.fillMaxSize()
+            val profileViewModel: ProfileViewModel = viewModel(factory = viewModelFactory) // ✅ USAR FACTORY
+
+            ProfileScreen(
+                viewModel = profileViewModel,
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
             )
         }
 

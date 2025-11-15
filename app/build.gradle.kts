@@ -66,6 +66,15 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation(libs.androidx.navigation.compose)
 
+    // ICONOS MATERIAL
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.compose.material.icons.extended)
+
+    // Para encriptación
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    // Para hashing más seguro (opcional)
+    implementation("at.favre.lib:bcrypt:0.9.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

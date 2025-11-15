@@ -20,12 +20,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cl.duoc.luditest_final.ui.theme.TertiaryContainerLight
-import cl.duoc.luditest_final.ui.theme.OnSurfaceLight
-import cl.duoc.luditest_final.ui.theme.YellowAccent
-import cl.duoc.luditest_final.ui.theme.PurpleAccent
-import cl.duoc.luditest_final.ui.theme.GrayButton
+import cl.duoc.luditest_final.ui.theme.*
 import androidx.compose.animation.core.*
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun DisclaimerScreen(
@@ -46,7 +43,7 @@ fun DisclaimerScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(TertiaryContainerLight)
+            .background(DcDarkPurple) // ✅ Usando color del theme
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp, vertical = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -59,24 +56,25 @@ fun DisclaimerScreen(
                 .drawBehind {
                     val offset = 4.dp.toPx()
                     drawRoundRect(
-                        color = Color.Black,
+                        color = DcBlack, // ✅ Usando color del theme
                         topLeft = Offset(offset, offset),
                         size = size,
                         cornerRadius = CornerRadius(8.dp.toPx())
                     )
                 }
                 .background(
-                    color = YellowAccent,
+                    color = DcYellow, // ✅ Usando color del theme
                     shape = RoundedCornerShape(8.dp)
                 )
-                .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
+                .border(2.dp, DcBlack, RoundedCornerShape(8.dp)) // ✅ Usando color del theme
                 .padding(horizontal = 20.dp, vertical = 12.dp)
         ) {
             Text(
-                text = "Antes de Comenzar",
+                text = "ANTES DE COMENZAR",
                 fontSize = 28.sp,
-                color = OnSurfaceLight,
+                color = DcBlack, // ✅ Usando color del theme
                 fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
         }
@@ -89,25 +87,26 @@ fun DisclaimerScreen(
                 .drawBehind {
                     val offset = 6.dp.toPx()
                     drawRoundRect(
-                        color = Color.Black,
+                        color = DcBlack, // ✅ Usando color del theme
                         topLeft = Offset(offset, offset),
                         size = size,
                         cornerRadius = CornerRadius(12.dp.toPx())
                     )
                 }
                 .background(
-                    color = YellowAccent,
+                    color = DcGray, // ✅ Usando color del theme
                     shape = RoundedCornerShape(12.dp)
                 )
-                .border(2.dp, Color.Black, RoundedCornerShape(12.dp))
+                .border(2.dp, DcBlack, RoundedCornerShape(12.dp)) // ✅ Usando color del theme
                 .padding(24.dp)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "¡Importante!",
+                    text = "⚡ ¡IMPORTANTE!",
                     fontSize = 22.sp,
-                    color = OnSurfaceLight,
+                    color = DcYellow, // ✅ Usando color del theme
                     fontFamily = FontFamily.SansSerif,
+                    fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
@@ -121,7 +120,7 @@ fun DisclaimerScreen(
                             "• Puedes realizar el test cuantas veces quieras\n" +
                             "• Tu 'personalidad' puede variar en diferentes momentos",
                     fontSize = 16.sp,
-                    color = OnSurfaceLight,
+                    color = DcWhite, // ✅ Usando color del theme
                     fontFamily = FontFamily.SansSerif,
                     textAlign = TextAlign.Justify,
                     lineHeight = 22.sp
@@ -137,24 +136,25 @@ fun DisclaimerScreen(
                 .drawBehind {
                     val offset = 4.dp.toPx()
                     drawRoundRect(
-                        color = Color.Black,
+                        color = DcBlack, // ✅ Usando color del theme
                         topLeft = Offset(offset, offset),
                         size = size,
                         cornerRadius = CornerRadius(10.dp.toPx())
                     )
                 }
                 .background(
-                    color = PurpleAccent.copy(alpha = 0.8f),
+                    color = DcPurple, // ✅ Usando color del theme
                     shape = RoundedCornerShape(10.dp)
                 )
-                .border(2.dp, Color.Black, RoundedCornerShape(10.dp))
+                .border(2.dp, DcBlack, RoundedCornerShape(10.dp)) // ✅ Usando color del theme
                 .padding(20.dp)
         ) {
             Text(
-                text = "💡 El test toma aproximadamente 5 minutos y consta de 12 preguntas de opción múltiple",
+                text = "EL TEST TOMA APROXIMADAMENTE 5 MINUTOS\nY CONSTA DE 12 PREGUNTAS DE OPCIÓN MÚLTIPLE",
                 fontSize = 14.sp,
-                color = Color.White,
+                color = DcBlack, // ✅ Usando color del theme
                 fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
         }
@@ -173,18 +173,18 @@ fun DisclaimerScreen(
                     .weight(1f)
                     .drawBehind {
                         drawRoundRect(
-                            Color.Black,
+                            DcBlack, // ✅ Usando color del theme
                             topLeft = Offset(3.dp.toPx(), 3.dp.toPx()),
                             size = size,
                             cornerRadius = CornerRadius(6.dp.toPx())
                         )
                     },
                 shape = RoundedCornerShape(5.dp),
-                border = BorderStroke(2.dp, Color.Black),
-                colors = ButtonDefaults.buttonColors(GrayButton),
+                border = BorderStroke(2.dp, DcBlack), // ✅ Usando color del theme
+                colors = ButtonDefaults.buttonColors(containerColor = DcGray), // ✅ Usando color del theme
                 contentPadding = PaddingValues(vertical = 12.dp)
             ) {
-                Text("Cancelar", color = Color.White, fontSize = 18.sp)
+                Text("CANCELAR", color = DcWhite, fontSize = 18.sp, fontWeight = FontWeight.Bold) // ✅ Usando color del theme
             }
 
             // Botón Aceptar (con animación)
@@ -198,18 +198,18 @@ fun DisclaimerScreen(
                     }
                     .drawBehind {
                         drawRoundRect(
-                            Color.Black,
+                            DcBlack, // ✅ Usando color del theme
                             topLeft = Offset(4.dp.toPx(), 4.dp.toPx()),
                             size = size,
                             cornerRadius = CornerRadius(6.dp.toPx())
                         )
                     },
                 shape = RoundedCornerShape(5.dp),
-                border = BorderStroke(2.dp, Color.Black),
-                colors = ButtonDefaults.buttonColors(PurpleAccent),
+                border = BorderStroke(2.dp, DcBlack), // ✅ Usando color del theme
+                colors = ButtonDefaults.buttonColors(containerColor = DcYellow), // ✅ Usando color del theme
                 contentPadding = PaddingValues(vertical = 12.dp)
             ) {
-                Text("Aceptar y Continuar", color = Color.White, fontSize = 18.sp)
+                Text("¡ACEPTAR!", color = DcBlack, fontSize = 18.sp, fontWeight = FontWeight.Bold) // ✅ Usando color del theme
             }
         }
     }

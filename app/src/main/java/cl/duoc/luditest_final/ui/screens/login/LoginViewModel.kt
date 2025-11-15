@@ -21,19 +21,37 @@ class LoginViewModel(
     private val _loginState = MutableStateFlow(LoginState())
     val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
 
-    fun login(userName: String) {
+    // ✅ NUEVO: Login con email y contraseña
+    fun loginWithPassword(email: String, password: String) {
+        _loginState.value = LoginState(isLoading = true)
+
+        viewModelScope.launch {
+            try {
+                val success = userRepository.loginWithPassword(email, password)
+                if (success) {
+                    _loginState.value = LoginState(isSuccess = true)
+                } else {
+                    _loginState.value = LoginState(error = "Email o contraseña incorrectos")
+                }
+            } catch (e: Exception) {
+                _loginState.value = LoginState(error = "Error al iniciar sesión: ${e.message}")
+            }
+        }
+    }
+
+    fun loginAsGuest() {
         _loginState.value = LoginState(isLoading = true)
 
         viewModelScope.launch {
             try {
                 userRepository.login(
-                    userId = "user_${System.currentTimeMillis()}",
-                    userName = userName,
+                    userId = "guest_${System.currentTimeMillis()}",
+                    userName = "Invitado",
                     email = null
                 )
                 _loginState.value = LoginState(isSuccess = true)
             } catch (e: Exception) {
-                _loginState.value = LoginState(error = "Error al iniciar sesión: ${e.message}")
+                _loginState.value = LoginState(error = "Error al entrar como invitado: ${e.message}")
             }
         }
     }
